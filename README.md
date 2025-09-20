@@ -45,6 +45,17 @@ multi-step form (rating → opinion → interest/email → thanks)
 
 ## Quick start
 
+### Option A: Run everything with Docker (recommended)
+
+```bash
+docker-compose up --build
+```
+- Backend → http://localhost:5050
+- Frontend → http://localhost:5173
+- Health check → http://localhost:5050/health
+
+## Option B
+
 ### 1) Run MongoDB (Docker)
 
 If you don't have a Mongo container yet:
@@ -85,6 +96,10 @@ MONGO_DB=feedback_db
 MONGO_COLLECTION=feedback
 PORT=5050
 ```
+##### For Docker Compose, use: mongodb://mongo:27017
+```text
+MONGO_URI=mongodb://localhost:27017
+```
 
 #### Run
 
@@ -118,18 +133,18 @@ Content-Type: application/json
 
 ### Request (client brief shape accepted by the backend)
 
-    ```json
+```json
 {
 "rating": 4,
 "improvementText": "The UI could be more intuitive on mobile.",
 "interestedInResearch": true,
 "email": "user@example.com"
 }
-    ```
+```
 
 ### cURL test
 
-    ```bash
+```bash
     curl -i -X POST http://localhost:5050/api/feedback \
      -H "Content-Type: application/json" \
      -d '{"rating":5,"improvementText":"Hi","interestedInResearch":true,"email":"test@example.com"}'
@@ -141,14 +156,14 @@ Expected: 201 Created with:
 ```
 
 ### Errors (400)
-	•	Missing rating
-	•	Out of range rating
-	•	Opinion > 500 chars
-	•	interestedInResearch not chosen
-	•	Missing/invalid email when interested
+- Missing rating  
+- Out of range rating  
+- Opinion > 500 chars  
+- interestedInResearch not chosen  
+- Missing/invalid email when interested
 
  ```json
-{"error": "...", "field": "<name>"}.
+{"error": "...", "field": "<name>"}
 ```
 
 

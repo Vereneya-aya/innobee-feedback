@@ -1,0 +1,33 @@
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: innobee-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: innobee-backend
+    ports:
+      - "5050:5050"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=feedback_db
+      - MONGO_COLLECTION=feedback
+      - PORT=5050
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: innobee-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
